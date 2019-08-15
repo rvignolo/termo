@@ -1,0 +1,4 @@
+TODOs
+
+1. a partir de una malla generada mediante keywords de MATE rellenar una estructura mesh_t de wasora. una idea es hacerlo mediante una keyword que sea SYSTEM y que eso efectivamente rellene la malla de wasora.
+2. MATERIAL keyword para definir materiales que luego puedan ser asociados a secciones, en lugar de definir explicitamente la expresion de la conductividad y rugosidad en cada seccion.
