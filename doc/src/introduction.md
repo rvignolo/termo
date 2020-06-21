@@ -3,9 +3,15 @@
 \newcommand{\acc}{\text{acc}}
 \newcommand{\fric}{\text{fric}}
 \newcommand{\gra}{\text{gra}}
+\newcommand{\form}{\text{form}}
 \newcommand{\TP}{\text{TP}}
-\newcommand{\lo}{\ell\text{o}}}
+\newcommand{\lo}{\ell\text{o}}
 
+<!-- Temperature -->
+\newcommand{\Tm}{T_{\text{m}}}
+\newcommand{\To}{T_{\text{o}}}
+\newcommand{\Two}{T_{\text{wo}}}
+\newcommand{\Twi}{T_{\text{wi}}}
 
 <!-- mass flow -->
 \newcommand{\mdotm}{\dot{m}_{\text{m}}}
@@ -28,6 +34,9 @@
 \newcommand{\rhol}{\rho_{\ell}}
 \newcommand{\rhov}{\rho_{\text{v}}}
 \newcommand{\rhomplus}{\rho_{\text{m}}^{+}}
+\newcommand{\rhomi}[1]{\rho_{\text{m},#1}}
+\newcommand{\rholi}[1]{\rho_{\ell,#1}}
+\newcommand{\rhovi}[1]{\rho_{\text{v},#1}}
 \newcommand{\rhomplusi}[1]{\rho_{\text{m},#1}^{+}}
 
 <!-- position -->
@@ -44,6 +53,7 @@
 
 <!-- diameters -->
 \newcommand{\De}{D_{\text{e}}}
+\newcommand{\Dx}{D_{\text{x}}}
 
 <!-- velocity -->
 \newcommand{\vl}{v_{\ell}}
@@ -56,6 +66,11 @@
 \newcommand{\hv}{h_{\text{v}}}
 \newcommand{\hf}{h_{\text{f}}}
 \newcommand{\hg}{h_{\text{g}}}
+\newcommand{\hmplusi}[1]{h_{\text{m},#1}^{+}}
+
+<!-- linear  -->
+\newcommand{\qp}{q'}
+\newcommand{\qpi}[1]{q'_{#1}}
 
 <!-- heat flux -->
 \newcommand{\qpp}{q''}
@@ -67,6 +82,11 @@
 \newcommand{\ftp}{f_{\TP}}
 \newcommand{\flo}{f_{\lo}}
 \newcommand{\ftpi}[1]{f_{\TP,#1}}
+\newcommand{\floi}[1]{f_{\lo,#1}}
+
+<!-- K -->
+\newcommand{\Klo}{K_{\lo}}
+\newcommand{\Kloi}[1]{K_{\lo,#1}}
 
 <!-- phi liquid only -->
 \newcommand{\philo}{\phi_{\lo}}
@@ -76,6 +96,7 @@
 \newcommand{\pacc}{p_{\acc}}
 \newcommand{\pfric}{p_{\fric}}
 \newcommand{\pgra}{p_{\gra}}
+\newcommand{\pform}{p_{\form}}
 
 <!-- pressure gradient -->
 \newcommand{\dpds}{\left( \frac{dp}{ds} \right)}
@@ -84,6 +105,16 @@
 \newcommand{\mul}{\mu_{\ell}}
 \newcommand{\muv}{\mu_{\text{v}}}
 \newcommand{\mutp}{\mu_{\TP}}
+
+<!-- Reynolds -->
+\newcommand{\Rey}{\text{Re}}
+\newcommand{\Reycrit}{\text{Re}_{\text{crit}}}
+
+<!-- Friedel -->
+\newcommand{\Fr}{\text{Fr}}
+
+<!-- Weber -->
+\newcommand{\We}{\text{We}}
 
 # Introduction
 
@@ -193,4 +224,46 @@ $$\frac{1}{\mutp} = \frac{x}{\muv} + \frac{1 - x}{\mul}$$
 
 $$\Delta \pacc = \Gm^2 \left( \frac{1}{\rhomplusi{i+1}} - \frac{1}{\rhomplusi{i}} \right)$$
 
-$$\Delta \pfric = \ftpi{i+1} \cdot \frac{\left( \si{i+1} - \si{i} \right)}{\De} \cdot \frac{\Gm^2}{2\rhomplusi{i+1}} = \philoi{i+1}^2$$
+$$\Delta \pfric = \ftpi{i+1} \cdot \frac{\left( \si{i+1} - \si{i} \right)}{\De} \cdot \frac{\Gm^2}{2\rhomplusi{i+1}} = \philoi{i+1}^2 \cdot \floi{i+1} \cdot \frac{L_{i+1}}{\De} \cdot \frac{\Gm^2}{2\rhomplusi{i+1}}$$
+
+$$\Delta \pgra = \rhomi{i+1} \cdot g \cdot \Delta z$$
+
+$$\Delta \pform = \philoi{i+1}^2 \cdot \Kloi{i+1} \cdot \frac{\Gm^2}{2\rholi{i+1}}$$
+
+$$\mdotm \cdot \frac{d\hmplus}{ds} = \qp$$
+
+$$\hmplusi{i+1} = \hmplusi{i} + \frac{\qpi{i+1} \cdot L_{i+1}}{\mdotm} = \hmplusi{i} + \frac{q_{i+1}}{\mdotm}$$
+
+$$q_{i+1} = (U \cdot \Delta A)_{i+1} \cdot \left( \To - \Tm \right)_{i+1}$$
+
+<!-- TODO: aca faltan banda de ecuaciones de transferencia de calor -->
+
+\begin{align*}
+  L_{\text{s}} &= \sqrt{\Delta x^2 + \Delta y^2 + \Delta z^2}\\
+  L_{\text{c}} &= 2R_{\text{c}} \cdot \arcsin \left( \frac{L_{\text{s}}}{2R_{\text{c}}} \right)\\
+  L_{\text{x}} &= \frac{\left| \Delta z \right|}{b} \cdot \sqrt{R_{\text{x}}^2 + b^2}
+\end{align*}
+
+\begin{equation}
+S = \begin{cases}
+E_1 \cdot \left( \frac{y}{1+ y \cdot E_2} - y \cdot E_2 \right)^{0.5} & \text{if } y \leqslant \frac{1 - E_2}{E_2^2},\\
+1 & \text{otherwise}.
+\end{cases}
+\end{equation}
+
+\begin{align}
+  E_1 &= 1.578 \cdot \Rey^{-0.19} \cdot \left( \frac{\rhol}{\rhov} \right)^{0.22}\\
+  E_2 &= 0.0273 \cdot \We \cdot \Rey^{-0.51} \cdot \left( \frac{\rhol}{\rhov} \right)^{-0.08}
+\end{align}
+
+
+\begin{equation}
+f = \begin{cases}
+\frac{1376 \cdot \left( \frac{\Dx}{\De} \right)^{-0.5}}{\left( 1.56 + \log_{10}\De \right)^{5.73}} & \text{if } \Rey < \Reycrit,\\
+0.304 \cdot \Rey^{-0.25} + 0.029 \cdot \left( \frac{\Dx}{\De} \right)^{-0.5} & \text{if } \Rey \geqslant \Reycrit.
+\end{cases}
+\end{equation}
+
+$$\Reycrit = 20000 \cdot \left( \frac{\De}{\Dx} \right)^{0.32}$$
+
+$$\philo^2 = E + \frac{3.24 \cdot F \cdot H}{\Fr^{0.045} \cdot \We^{0.035}}$$
