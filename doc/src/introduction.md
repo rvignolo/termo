@@ -1,4 +1,12 @@
 
+<!-- TODO: definir subindices y usarlos para las otras definiciones -->
+\newcommand{\acc}{\text{acc}}
+\newcommand{\fric}{\text{fric}}
+\newcommand{\gra}{\text{gra}}
+\newcommand{\TP}{\text{TP}}
+\newcommand{\lo}{\ell\text{o}}}
+
+
 <!-- mass flow -->
 \newcommand{\mdotm}{\dot{m}_{\text{m}}}
 \newcommand{\mdotl}{\dot{m}_{\ell}}
@@ -11,6 +19,7 @@
 
 <!-- mass flux -->
 \newcommand{\Gm}{G_{\text{m}}}
+\newcommand{\Gmp}{G_{\text{m}p}}
 \newcommand{\Gl}{G_{\ell}}
 \newcommand{\Gv}{G_{\text{v}}}
 
@@ -19,11 +28,22 @@
 \newcommand{\rhol}{\rho_{\ell}}
 \newcommand{\rhov}{\rho_{\text{v}}}
 \newcommand{\rhomplus}{\rho_{\text{m}}^{+}}
+\newcommand{\rhomplusi}[1]{\rho_{\text{m},#1}^{+}}
+
+<!-- position -->
+\newcommand{\si}[1]{s_{#1}}
 
 <!-- cross sectional areas -->
 \newcommand{\As}{A_{\text{s}}}
+\newcommand{\Asp}{A_{\text{s}p}}
 \newcommand{\Al}{A_{\ell}}
 \newcommand{\Av}{A_{\text{v}}}
+
+<!-- perimeter -->
+\newcommand{\Ps}{P_{\text{s}}}
+
+<!-- diameters -->
+\newcommand{\De}{D_{\text{e}}}
 
 <!-- velocity -->
 \newcommand{\vl}{v_{\ell}}
@@ -37,7 +57,33 @@
 \newcommand{\hf}{h_{\text{f}}}
 \newcommand{\hg}{h_{\text{g}}}
 
+<!-- heat flux -->
+\newcommand{\qpp}{q''}
+
+<!-- name? -->
 \newcommand{\xe}{x_{\text{e}}}
+
+<!-- darcy friction factor -->
+\newcommand{\ftp}{f_{\TP}}
+\newcommand{\flo}{f_{\lo}}
+\newcommand{\ftpi}[1]{f_{\TP,#1}}
+
+<!-- phi liquid only -->
+\newcommand{\philo}{\phi_{\lo}}
+\newcommand{\philoi}[1]{\phi_{\lo,#1}}
+
+<!-- pressure -->
+\newcommand{\pacc}{p_{\acc}}
+\newcommand{\pfric}{p_{\fric}}
+\newcommand{\pgra}{p_{\gra}}
+
+<!-- pressure gradient -->
+\newcommand{\dpds}{\left( \frac{dp}{ds} \right)}
+
+<!-- dynamic viscosity -->
+\newcommand{\mul}{\mu_{\ell}}
+\newcommand{\muv}{\mu_{\text{v}}}
+\newcommand{\mutp}{\mu_{\TP}}
 
 # Introduction
 
@@ -108,3 +154,43 @@ $$\hm = \frac{1}{\rhom} \cdot \left( \rhov \cdot \alpha \cdot \hv + \rhol \cdot 
 $$ \hmplus = \frac{1}{\Gm} \cdot \left( \rhov \cdot \alpha \cdot \hv \cdot \vv + \rhol \cdot (1 - \alpha) \cdot \hl \cdot \vl \right) $$
 
 $$\xe = \frac{\hmplus - \hf}{\hg - \hf} = \frac{x \cdot \hv + (1 - x) \cdot \hl - \hf}{\hg - \hf}$$
+
+<!-- CHECK -->
+\begin{align}
+  \frac{d\Gm}{ds} &= 0\\
+  -\frac{dp}{ds} &= -\frac{d}{ds} \left( \frac{\Gm^2}{\rhomplus} \right) +  \frac{\ftp}{\De} \cdot \frac{\Gm^2}{2 \rhomplus} + \rhom \cdot g \cdot \cos \theta\\
+  \Gm \cdot \frac{d\hmplus}{ds} &= \frac{\qpp \cdot \Ps}{\As}
+\end{align}
+
+<!-- CHECK -->
+$$\sum_{p=1}^{P} \Gmp \cdot \Asp = \mdotm$$
+
+$$\Gmp^{n+1} = \omega_p^n \cdot \Gmp^n$$
+
+$$\omega_p = \Gamma \cdot \lambda_p$$
+
+<!-- COMPLETE -->
+$$\lambda_p = \sqrt{\frac{\Delta}{\Delta}}$$
+
+$$\Gamma = \frac{\mdotm}{\sum_{p=1}^{P} \lambda_p \cdot \Gmp \cdot \Asp}$$
+
+$$-\frac{dp}{ds} = \dpds_{\acc} + \dpds_{\fric} + \dpds_{\gra}$$
+
+\begin{align}
+  \dpds_{\acc} &= \frac{d}{ds} \left( \frac{\Gm^2}{\rhomplus} \right)\\
+  \dpds_{\fric} &= \frac{\ftp}{\De} \cdot \frac{\Gm^2}{2 \rhomplus}\\
+  \dpds_{\gra} &= \rhom \cdot g \cdot \cos \theta
+\end{align}
+
+\begin{align}
+  \dpds_{\fric}^{\TP} &= \philo^2 \cdot \dpds_{\fric}^{\lo}\\
+  \dpds_{\fric}^{\lo} &= \frac{\flo}{\De} \cdot \frac{\Gm^2}{2\rhol} 
+\end{align}
+
+$$\philo^2 = \frac{\rhol}{\rhomplus} \cdot \frac{\ftp}{\flo}$$
+
+$$\frac{1}{\mutp} = \frac{x}{\muv} + \frac{1 - x}{\mul}$$
+
+$$\Delta \pacc = \Gm^2 \left( \frac{1}{\rhomplusi{i+1}} - \frac{1}{\rhomplusi{i}} \right)$$
+
+$$\Delta \pfric = \ftpi{i+1} \cdot \frac{\left( \si{i+1} - \si{i} \right)}{\De} \cdot \frac{\Gm^2}{2\rhomplusi{i+1}} = \philoi{i+1}^2$$
