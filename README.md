@@ -98,5 +98,10 @@ PRINT_FUNCTION {
  To_layer_1_spiral_2
  hi_layer_1_spiral_2_pipe
 }
-
 ```
+
+Results can be visualized in [ParaView](https://www.paraview.org/) as well as be plotted as 1 dimensional curves:
+
+![](doc/src/paraview.png)
+
+![](doc/src/hi.png)
